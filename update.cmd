@@ -43,7 +43,7 @@ set /p push_choice=" ➔ 푸시하려면 'Y'를 입력하세요 (Y/N): "
 if /i "%push_choice%"=="Y" (
     echo.
     echo  [진행] 📤 GitHub로 소스코드를 전송하는 중...
-    git push -u origin main
+    git push -u origin main --force
     echo.
     echo ===================================================
     echo   🎉 모든 작업이 성공적으로 완료되었습니다!
