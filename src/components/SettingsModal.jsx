@@ -106,7 +106,7 @@ return (
             <div className="info-meta-grid">
               <div className="meta-card">
                 <span className="meta-label">버전</span>
-                <span className="meta-value">v{appVersion} (Production)</span>
+                <span className="meta-value">v{appVersion}</span>
               </div>
               <div className="meta-card">
                 <span className="meta-label">일렉트론 (Electron)</span>
