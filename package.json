@@ -1,0 +1,64 @@
+{
+    "name": "pare-ide",
+    "version": "1.0.3",
+    "description": "Pare IDE - Minimalist Professional Desktop IDE",
+    "main": "main.cjs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/paresthesia-1010/pare-ide.git"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "start": "concurrently -k \"vite --port 5173\" \"wait-on tcp:5173 && electron .\"",
+        "pack": "vite build && electron-builder --dir",
+        "dist": "vite build && electron-builder"
+    },
+    "build": {
+        "appId": "com.pare.ide",
+        "productName": "Pare IDE",
+        "publish": [
+            {
+                "provider": "github",
+                "owner": "paresthesia-1010",
+                "repo": "pare-ide"
+            }
+        ],
+        "files": [
+            "dist/**/*",
+            "main.cjs",
+            "preload.cjs",
+            "public/**/*",
+            "**/*"
+        ],
+        "directories": {
+            "output": "release"
+        },
+        "win": {
+            "target": [
+                "nsis",
+                "portable"
+            ],
+            "icon": "public/icon.ico"
+        }
+    },
+    "dependencies": {
+        "@monaco-editor/react": "^4.6.0",
+        "electron-updater": "^6.8.11",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-icons": "^5.0.1",
+        "xterm": "^5.3.0",
+        "xterm-addon-fit": "^0.8.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.2.1",
+        "concurrently": "^8.2.2",
+        "cross-env": "^7.0.3",
+        "electron": "29.1.0",
+        "electron-builder": "^24.x.x",
+        "vite": "^5.1.4",
+        "wait-on": "^7.2.0"
+    },
+    "type": "module"
+}

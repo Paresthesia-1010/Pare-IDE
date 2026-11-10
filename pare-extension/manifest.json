@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Pare AI Studio Bridge",
+  "version": "1.0.0",
+  "description": "Bridges prompts from Pare IDE directly to Google AI Studio",
+  "content_scripts": [
+    {
+      "matches": ["https://aistudio.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:39281/*"
+  ]
+}
