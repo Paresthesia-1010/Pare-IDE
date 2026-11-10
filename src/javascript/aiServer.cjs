@@ -91,7 +91,7 @@ function initAiServer(context, port = 39281) {
                       chatWindow.webContents.send('ai:stream', {
                         id: `loop-${Date.now()}`,
                         role: 'user',
-                        text: `🤖 [자율 연속 실행] ${nextTurnAction.prompt}`
+                        text: `${nextTurnAction.prompt}`
                       });
                     }
                   }, 600);

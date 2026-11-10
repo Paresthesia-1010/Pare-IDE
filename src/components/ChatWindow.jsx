@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { sanitizeAiText } from './js/chatformat';
+import MarkdownView from './js/markdown';
 import 'xterm/css/xterm.css';
 import {
   VscSparkle,
@@ -19,21 +21,6 @@ import {
   VscError,
   VscRefresh
 } from 'react-icons/vsc';
-
-function sanitizeAiText(raw) {
-  if (!raw) return '';
-  let cleaned = raw;
-  cleaned = cleaned.replace(/<edit_file[\s\S]*?(<\/edit_file>|$)/gi, '');
-  cleaned = cleaned.replace(/<write_file[\s\S]*?(<\/write_file>|$)/gi, '');
-  cleaned = cleaned.replace(/<read_file[\s\S]*?(<\/read_file>|\/?>|$)/gi, '');
-  cleaned = cleaned.replace(/<run_command[\s\S]*?(<\/run_command>|\/?>|$)/gi, '');
-  cleaned = cleaned.replace(/<delete_file[\s\S]*?(<\/delete_file>|\/?>|$)/gi, '');
-  cleaned = cleaned.replace(/<create_dir[\s\S]*?(<\/create_dir>|\/?>|$)/gi, '');
-  cleaned = cleaned.replace(/<list_files[\s\S]*?(<\/list_files>|\/?>|$)/gi, '');
-  cleaned = cleaned.replace(/<next_turn[\s\S]*?(<\/next_turn>|$)/gi, ''); // ★ 추가
-  cleaned = cleaned.replace(/<\/end>/gi, '');
-  return cleaned.trim();
-}
 
 function extractUserText(raw) {
   if (!raw) return '';
@@ -427,7 +414,7 @@ export default function ChatWindow() {
 
                     {cleanedText && (
                       <div className="chat-text-content">
-                        {renderMultilineText(cleanedText)}
+                        <MarkdownView content={cleanedText} />
                       </div>
                     )}
 

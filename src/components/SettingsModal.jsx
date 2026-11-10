@@ -169,7 +169,7 @@ return (
                     ? updateState.error
                     : updateState.status === 'downloading'
                     ? '백그라운드에서 패키지를 다운로드하고 있습니다.'
-                    : `현재 설치된 버전: v${appVersion} (GitHub Releases 연동)`}
+                    : `현재 설치된 버전: v${appVersion}`}
                 </div>
                 {updateState.status === 'downloading' && (
                   <div style={{ marginTop: '8px', height: '4px', background: '#222', borderRadius: '2px', overflow: 'hidden' }}>
