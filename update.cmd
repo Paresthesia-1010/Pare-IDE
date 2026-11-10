@@ -10,6 +10,8 @@ echo.
 
 :: 1. git add . 자동 실행
 echo  [1/3] 📂 변경된 소스코드를 스테이징 영역에 추가합니다...
+git init
+git remote add origin https://github.com/Paresthesia-1010/Pare-IDE
 git add .
 echo        ✔️ 완료되었습니다.
 echo.
