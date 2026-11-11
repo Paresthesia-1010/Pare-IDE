@@ -54,6 +54,20 @@ function renderMultilineText(text) {
   ));
 }
 
+function getInProgressStatus(rawText) {
+  if (!rawText) return null;
+  const hasEnd = rawText.includes('</end>') || rawText.includes('<end>');
+  if (hasEnd) return null;
+
+  const hasEdit = rawText.includes('<edit');
+  const hasWrite = rawText.includes('<write');
+
+  if (hasEdit && hasWrite) return '파일 생성 및 수정 중...';
+  if (hasEdit) return '수정 중...';
+  if (hasWrite) return '생성 중...';
+  return null;
+}
+
 // ★ 말풍선 내부 인라인 xterm.js 터미널 컴포넌트
 function InlineBubbleTerminal({ cmdId, command, initialStatus, initialCode }) {
   const termContainerRef = useRef(null);
@@ -326,7 +340,8 @@ export default function ChatWindow() {
   const isValidMessage = (msg) => {
     if (msg.role === 'user') return Boolean(msg.text && msg.text.trim());
     const cleaned = sanitizeAiText(msg.text);
-    return Boolean(msg.isThinking || msg.thoughtText || cleaned || (msg.actions && msg.actions.length > 0));
+    const inProgress = getInProgressStatus(msg.text);
+    return Boolean(msg.isThinking || msg.thoughtText || cleaned || inProgress || (msg.actions && msg.actions.length > 0));
   };
 
   const displayMessages = messages.filter(isValidMessage);
@@ -364,6 +379,7 @@ export default function ChatWindow() {
             const isApplied = Boolean(appliedMap[msg.id]);
             const hasDiffActions = msg.actions && msg.actions.some(a => a.type === 'diff_modified' || a.type === 'created' || a.type === 'modified');
             const runCmdActions = msg.actions ? msg.actions.filter(a => a.type === 'run_command') : [];
+            const inProgressStatus = !isUser ? getInProgressStatus(msg.text) : null;
 
             return (
               <div key={msg.id} className={`chat-message-row ${isUser ? 'user' : 'assistant'}`}>
@@ -415,6 +431,28 @@ export default function ChatWindow() {
                     {cleanedText && (
                       <div className="chat-text-content">
                         <MarkdownView content={cleanedText} />
+                      </div>
+                    )}
+
+                    {inProgressStatus && (
+                      <div
+                        className="in-progress-badge"
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          background: 'rgba(59, 130, 246, 0.1)',
+                          border: '1px solid rgba(59, 130, 246, 0.25)',
+                          color: '#60a5fa',
+                          fontSize: '12px',
+                          fontWeight: 500,
+                          margin: '6px 0'
+                        }}
+                      >
+                        <VscRefresh size={13} className="spin-icon" />
+                        <span>{inProgressStatus}</span>
                       </div>
                     )}
 
