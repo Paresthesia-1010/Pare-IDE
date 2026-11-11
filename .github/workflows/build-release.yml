@@ -38,6 +38,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # 🔥 [추가] release 폴더 내 .exe 파일명 변경 단계
+      - name: 빌드된 파일 이름 변경 (점 -> 하이픈)
+        shell: pwsh
+        run: |
+          Get-ChildItem "release/*.exe" | ForEach-Object {
+              # 'Pare.IDE.Setup' 부분만 명확하게 하이픈으로 치환
+              $finalName = $_.Name -replace 'Pare\.IDE\.Setup', 'Pare-IDE-Setup'
+              Rename-Item $_.FullName -NewName $finalName
+              Write-Host "파일명 변경 완료: $($_.Name) -> $finalName"
+          }
+
+
       - name: 빌드된 산출물(exe) 아티팩트 업로드
         uses: actions/upload-artifact@v4
         with:
